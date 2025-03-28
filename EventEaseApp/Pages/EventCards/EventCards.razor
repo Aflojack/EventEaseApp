@@ -1,0 +1,44 @@
+﻿@page "/eventcards"
+@layout EventCardsLayout
+
+@using EventEaseApp.Models
+@using EventEaseApp.Services
+@using EventEaseApp.Shared
+
+@inject EventsService EventsService
+
+<h3>Event Cards</h3>
+
+@if(Events==null)
+{
+    <Loading/>
+}
+else if(Events.Count==0)
+{
+    <p>No planned event right now.</p>
+}
+else
+{
+    @for(var i=0;i<Events.Count;i++)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@(Events[i].Name)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
+                <p class="card-text">@(Events[i].Location)</p>
+                <a href="eventcards/detail/@i" class="card-link">Details</a>
+            </div>
+        </div>
+    }
+}
+
+
+
+@code {
+    private List<Event> Events {get; set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        Events = await EventsService.GetEvents();
+    }
+}
