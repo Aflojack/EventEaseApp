@@ -15,6 +15,16 @@ public class EventsService
         await Task.Delay(250); // Just for my fancy loading circle
         return Events;
     }
+    
+    public async Task<Event> GetEvent(int id)
+    {
+        await Task.Delay(250); // Just for my fancy loading circle
+        if(id>=0 && id<Events.Count)
+        {
+            return Events[id];
+        }
+        return null;
+    }
 
     public async Task AddEvent(Event newEvent)
     {

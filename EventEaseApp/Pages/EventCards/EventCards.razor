@@ -19,17 +19,19 @@ else if(Events.Count==0)
 }
 else
 {
-    @for(var i=0;i<Events.Count;i++)
-    {
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">@(Events[i].Name)</h5>
-                <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
-                <p class="card-text">@(Events[i].Location)</p>
-                <a href="eventcards/detail/@i" class="card-link">Details</a>
+    <div class="card-group">
+        @for(var i=0;i<Events.Count;i++)
+        {
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@(Events[i].Name)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
+                    <p class="card-text">@(Events[i].Location)</p>
+                    <a href="eventcards/detail/@i" class="card-link">Details</a>
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 }
 
 
