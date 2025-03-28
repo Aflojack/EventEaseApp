@@ -1,8 +1,58 @@
 ﻿@page "/eventcards/register"
 @layout EventCardsLayout
 
+@using EventEaseApp.Models
+@using EventEaseApp.Shared
+@using EventEaseApp.Services
+
+@inject EventStateService EventStateService
+@inject EventsService EventsService
+@inject NavigationManager NavManager
+
 <h3>Register New Event</h3>
 
-@code {
+@if(EventStateService==null)
+{
+    <loading/>
+}
+else
+{
+    <EditForm Model="EventState" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
+        <div class="mb-4 form-group">
+            <label for="event-name">Event Name:</label>
+            <InputText id="event-name" class="form-control" @bind-Value="EventState.Name" placeholder="Enter event name"></InputText>
+        </div>
+        <div class="mb-4 form-group">
+            <label for="event-date">Event Date:</label>
+            <InputDate id="event-date" class="form-control" @bind-Value="EventState.Date"></InputDate>
+        </div>
+        <div class="mb-4 form-group">
+            <label for="event-location">Event Location:</label>
+            <InputText id="event-location" class="form-control" @bind-Value="EventState.Location" placeholder="Enter event location"></InputText>
+        </div>
+        <div class="mb-4 form-group">
+            <label for="event-description">Event Description</label>
+            <InputTextArea id="event-description" class="form-control" @bind-Value="EventState.Description" placeholder="Enter description (optional)"></InputTextArea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+}
+
+@code {
+    private Event EventState {get; set;}
+
+    protected override void OnInitialized()
+    {
+        EventState = EventStateService.LoadState();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await EventsService.AddEvent(EventState);
+        EventStateService.ClearState();
+        NavManager.NavigateTo("eventcards");
+    }
 }
