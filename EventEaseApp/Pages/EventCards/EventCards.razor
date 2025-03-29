@@ -1,11 +1,13 @@
 ﻿@page "/eventcards"
 @layout EventCardsLayout
 
+@using EventEaseApp.Components
 @using EventEaseApp.Models
 @using EventEaseApp.Services
 @using EventEaseApp.Shared
 
 @inject EventsService EventsService
+@inject NavigationManager NavManager
 @inject ILogger<EventCards> Logger
 
 <h3>Event Cards</h3>
@@ -22,18 +24,9 @@ else
 {
     @for(var i=0;i<Events.Count;i++)
     {
-        <div class="card" style="width: 100%;">
-            <div class="card-body">
-                <h5 class="card-title">@(Events[i].Name)</h5>
-                <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
-                <p class="card-text">@(Events[i].Location)</p>
-                <a href="eventcards/detail/@i" class="card-link">Details</a>
-            </div>
-        </div>
+        <EventCard Id="@i" Name="@(Events[i].Name)" Date="@(Events[i].Date)" Location="@(Events[i].Location)" OnClick="HandleOnClickEvent"></EventCard>
     }
 }
-
-
 
 @code {
     private List<Event> Events {get; set;}
@@ -43,5 +36,10 @@ else
         Logger.LogInformation("Fetching events from service.");
         Events = await EventsService.GetEvents();
         Logger.LogInformation("Events loaded.");
+    }
+
+    private void HandleOnClickEvent(int id)
+    {
+        NavManager.NavigateTo("eventcards/detail/"+id);
     }
 }

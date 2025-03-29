@@ -1,0 +1,30 @@
+﻿<div class="card" style="width: 100%;">
+    <div class="card-body">
+        <h5 class="card-title">@Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Date</h6>
+        <p class="card-text">@Location</p>
+        <button type="button" class="btn btn-primary" @onclick="@OnClickTask">Details</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id {get; set;}
+
+    [Parameter]
+    public string Name {get; set;}
+
+    [Parameter]
+    public DateTime Date {get; set;}
+
+    [Parameter]
+    public string Location {get; set;}
+
+    [Parameter]
+    public EventCallback<int> OnClick {get; set;}
+
+    private async Task OnClickTask()
+    {
+        await OnClick.InvokeAsync(Id);
+    }
+}
