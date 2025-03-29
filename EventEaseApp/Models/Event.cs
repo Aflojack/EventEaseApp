@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace EventEaseApp.Models;
 
@@ -15,4 +16,13 @@ public class Event
 
     [StringLength(250, ErrorMessage = "The description can be up to 250 characters long")]
     public string Description {get; set;}
+
+    public Event(){}
+    public Event(string name, DateTime date, string location, string description)
+    {
+        Name=name;
+        Date=date;
+        Location=location;
+        Description=description;
+    }
 }

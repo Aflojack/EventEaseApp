@@ -8,7 +8,10 @@ namespace EventEaseApp.Services;
 /// </summary>
 public class EventsService
 {
-    private readonly List<Event> Events = new List<Event>();
+    private readonly List<Event> Events = new List<Event>()
+    {
+        new Event("Viltrumite Community Event", new DateTime(2026,1,1),"Earth", "Tired of solo planetary domination? Want to meet like-minded conquerors who appreciate a good mustache? Then join us for the Viltrumite Community Event, where intergalactic warriors come together for a day of fun, fitness, and forced allegiance!"),
+    };
 
     public async Task<List<Event>> GetEvents()
     {
