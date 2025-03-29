@@ -1,0 +1,46 @@
+﻿@page "/attendance"
+@layout AttendanceLayout
+
+@using EventEaseApp.Models
+@using EventEaseApp.Services
+@using EventEaseApp.Shared
+
+@inject EventsService EventsService
+@inject ILogger<Attendance> Logger
+
+<h3>Attendance</h3>
+
+@if(Events==null)
+{
+    <Loading/>
+}
+else if(Events.Count==0)
+{
+    <p>No planned event right now.</p>
+}
+else
+{
+    @for(var i=0;i<Events.Count;i++)
+    {
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">@(Events[i].Name)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
+                <p class="card-text">@(Events[i].Location)</p>
+                <a href="attendance/list/@i" class="card-link">Participants List</a>
+                <a href="attendance/register/@i" class="card-link">Register</a>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private List<Event> Events {get; set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Fetching events from service.");
+        Events = await EventsService.GetEvents();
+        Logger.LogInformation("Events loaded.");
+    }
+}

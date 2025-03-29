@@ -9,6 +9,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<EventsService>();
 builder.Services.AddScoped<EventStateService>();
+builder.Services.AddScoped<AttendanceService>();
+builder.Services.AddScoped<AttenderStateService>();
 
 builder.Services.AddLogging();
 

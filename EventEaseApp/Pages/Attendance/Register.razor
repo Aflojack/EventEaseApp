@@ -1,0 +1,57 @@
+﻿@page "/attendance/register/{id:int}"
+@layout AttendanceLayout
+
+@using EventEaseApp.Models
+@using EventEaseApp.Shared
+@using EventEaseApp.Services
+
+@inject AttendanceService AttendanceService
+@inject AttenderStateService AttenderStateService
+@inject NavigationManager NavManager
+@inject ILogger<Register> Logger
+
+<h3>Register New Attend</h3>
+
+@if(FormState==null)
+{
+    <loading/>
+}
+else
+{
+    <EditForm Model="FormState" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-4 form-group">
+            <label for="attend-name">Name:</label>
+            <InputText id="attend-name" class="form-control" @bind-Value="FormState.Name" placeholder="Enter your name"></InputText>
+        </div>
+        <div class="mb-4 form-group">
+            <label for="attend-email">Email:</label>
+            <InputText id="attend-email" class="form-control" @bind-Value="FormState.Email" placeholder="Enter your email"></InputText>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id {get; set;}
+    private Attender FormState {get; set;}
+
+    protected override void OnInitialized()
+    {
+        FormState = AttenderStateService.LoadState();
+        FormState.EventId = Id;
+        Logger.LogInformation("StateService connected.");
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        Logger.LogInformation("Start processing valid submission.");
+        await AttendanceService.AddAttender(FormState);
+        AttenderStateService.ClearState();
+        Logger.LogInformation("Submission processed. Rerouting to /attendance");
+        NavManager.NavigateTo("attendance");
+    }
+}
