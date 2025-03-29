@@ -4,14 +4,15 @@ namespace EventEaseApp.Models;
 
 public class Event
 {
-    [Required]
+    [Required(ErrorMessage = "Provide a name for the event")]
     public string Name {get; set;}
 
-    [Required]
+    [Required(ErrorMessage = "Provide a date for the event")]
     public DateTime Date {get; set;} = new DateTime(2025, 1, 1);
 
-    [Required]
+    [Required(ErrorMessage = "Provide a location for the event")]
     public string Location {get; set;}
 
+    [StringLength(250, ErrorMessage = "The description can be up to 250 characters long")]
     public string Description {get; set;}
 }

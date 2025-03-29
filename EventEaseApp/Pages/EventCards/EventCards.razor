@@ -6,6 +6,7 @@
 @using EventEaseApp.Shared
 
 @inject EventsService EventsService
+@inject ILogger<EventCards> Logger
 
 <h3>Event Cards</h3>
 
@@ -19,19 +20,17 @@ else if(Events.Count==0)
 }
 else
 {
-    <div class="card-group">
-        @for(var i=0;i<Events.Count;i++)
-        {
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">@(Events[i].Name)</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
-                    <p class="card-text">@(Events[i].Location)</p>
-                    <a href="eventcards/detail/@i" class="card-link">Details</a>
-                </div>
+    @for(var i=0;i<Events.Count;i++)
+    {
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">@(Events[i].Name)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@(Events[i].Date)</h6>
+                <p class="card-text">@(Events[i].Location)</p>
+                <a href="eventcards/detail/@i" class="card-link">Details</a>
             </div>
-        }
-    </div>
+        </div>
+    }
 }
 
 
@@ -41,6 +40,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        Logger.LogInformation("Fetching events from service.");
         Events = await EventsService.GetEvents();
+        Logger.LogInformation("Events loaded.");
     }
 }

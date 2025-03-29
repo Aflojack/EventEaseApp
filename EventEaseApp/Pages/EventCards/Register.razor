@@ -8,6 +8,7 @@
 @inject EventStateService EventStateService
 @inject EventsService EventsService
 @inject NavigationManager NavManager
+@inject ILogger<Register> Logger
 
 <h3>Register New Event</h3>
 
@@ -47,12 +48,15 @@ else
     protected override void OnInitialized()
     {
         EventState = EventStateService.LoadState();
+        Logger.LogInformation("StateService connected.");
     }
 
     private async Task HandleValidSubmit()
     {
+        Logger.LogInformation("Start processing valid submission.");
         await EventsService.AddEvent(EventState);
         EventStateService.ClearState();
+        Logger.LogInformation("Submission processed. Rerouting to /eventcards");
         NavManager.NavigateTo("eventcards");
     }
 }

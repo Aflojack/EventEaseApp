@@ -7,6 +7,7 @@
 
 @inject EventsService EventsService
 @inject NavigationManager NavManager
+@inject ILogger<Detail> Logger
 
 @if(CurrentEvent==null)
 {
@@ -64,10 +65,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        Logger.LogInformation("Fetching event from service.");
         CurrentEvent = await EventsService.GetEvent(Id);
         if(CurrentEvent==null)
         {
-            NavManager.NavigateTo("eventcards");
+            Logger.LogWarning($"Provided '{Id}' id not found or not exists. Rerouting to /eventcards.");
+            NavManager.NavigateTo("eventcards", forceLoad: false);
         }
+        Logger.LogInformation("Event loaded.");
     }
 }
