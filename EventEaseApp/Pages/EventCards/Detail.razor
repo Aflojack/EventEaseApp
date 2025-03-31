@@ -1,13 +1,15 @@
 ﻿@page "/eventcards/detail/{id:int}"
 @layout EventCardsLayout
 
+@using EventEaseApp.Components
 @using EventEaseApp.Services
-@using EventEaseApp.Shared
 @using EventEaseApp.Models
 
 @inject EventsService EventsService
 @inject NavigationManager NavManager
 @inject ILogger<Detail> Logger
+
+<h3>Event Detail:</h3>
 
 @if(CurrentEvent==null)
 {
@@ -15,8 +17,6 @@
 }
 else
 {
-    <h3>Event Detail:</h3>
-
     <div class="container">
         <div class="row">
             <div class="col">

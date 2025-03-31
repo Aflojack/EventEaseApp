@@ -2,12 +2,14 @@
 @layout AttendanceLayout
 
 @using EventEaseApp.Services
-@using EventEaseApp.Shared
+@using EventEaseApp.Components
 @using EventEaseApp.Models
 
 @inject AttendanceService AttendanceService
 @inject NavigationManager NavManager
 @inject ILogger<List> Logger
+
+<h3>List participants</h3>
 
 @if(SelectedEventAttenderList==null)
 {
@@ -15,12 +17,11 @@
 }
 else if(SelectedEventAttenderList.Count==0)
 {
-    <h3>List</h3>
     <p>No attenders on the event right now.</p>
 }
 else
 {
-    <h3>Total number of participants: @SelectedEventAttenderList.Count</h3>
+    <h4>Total number of participants: @SelectedEventAttenderList.Count</h4>
     <div class="container">
         <div class="row">
             <div class="col">
