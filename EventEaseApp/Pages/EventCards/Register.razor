@@ -5,14 +5,14 @@
 @using EventEaseApp.Components
 @using EventEaseApp.Services
 
-@inject EventStateService EventStateService
+@inject IStateService<Event> StateService
 @inject EventsService EventsService
 @inject NavigationManager NavManager
 @inject ILogger<Register> Logger
 
 <h3>Register New Event</h3>
 
-@if(EventStateService==null)
+@if(StateService==null)
 {
     <loading/>
 }
@@ -47,7 +47,7 @@ else
 
     protected override void OnInitialized()
     {
-        EventState = EventStateService.LoadState();
+        EventState = StateService.LoadState();
         Logger.LogInformation("StateService connected.");
     }
 
@@ -55,7 +55,7 @@ else
     {
         Logger.LogInformation("Start processing valid submission.");
         await EventsService.AddEvent(EventState);
-        EventStateService.ClearState();
+        StateService.ClearState();
         Logger.LogInformation("Submission processed. Rerouting to /eventcards");
         NavManager.NavigateTo("eventcards");
     }

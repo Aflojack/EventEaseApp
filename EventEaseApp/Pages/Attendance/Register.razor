@@ -5,30 +5,30 @@
 @using EventEaseApp.Components
 @using EventEaseApp.Services
 
+@inject IStateService<Attender> StateService
 @inject AttendanceService AttendanceService
-@inject AttenderStateService AttenderStateService
 @inject NavigationManager NavManager
 @inject ILogger<Register> Logger
 
 <h3>Register New Attend</h3>
 
-@if(FormState==null)
+@if(AttenderState==null)
 {
     <loading/>
 }
 else
 {
-    <EditForm Model="FormState" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="AttenderState" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
         <div class="mb-4 form-group">
             <label for="attend-name">Name:</label>
-            <InputText id="attend-name" class="form-control" @bind-Value="FormState.Name" placeholder="Enter your name"></InputText>
+            <InputText id="attend-name" class="form-control" @bind-Value="AttenderState.Name" placeholder="Enter your name"></InputText>
         </div>
         <div class="mb-4 form-group">
             <label for="attend-email">Email:</label>
-            <InputText id="attend-email" class="form-control" @bind-Value="FormState.Email" placeholder="Enter your email"></InputText>
+            <InputText id="attend-email" class="form-control" @bind-Value="AttenderState.Email" placeholder="Enter your email"></InputText>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </EditForm>
@@ -37,20 +37,21 @@ else
 @code {
     [Parameter]
     public int Id {get; set;}
-    private Attender FormState {get; set;}
+    
+    private Attender AttenderState {get; set;}
 
     protected override void OnInitialized()
     {
-        FormState = AttenderStateService.LoadState();
-        FormState.EventId = Id;
+        AttenderState = StateService.LoadState();
+        AttenderState.EventId = Id;
         Logger.LogInformation("StateService connected.");
     }
 
     private async Task HandleValidSubmit()
     {
         Logger.LogInformation("Start processing valid submission.");
-        await AttendanceService.AddAttender(FormState);
-        AttenderStateService.ClearState();
+        await AttendanceService.AddAttender(AttenderState);
+        StateService.ClearState();
         Logger.LogInformation("Submission processed. Rerouting to /attendance");
         NavManager.NavigateTo("attendance");
     }
